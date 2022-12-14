@@ -3,7 +3,7 @@
 resource "algolia_index" "primaries" {
   for_each      = toset(local.locales)
 
-  deletion_protection = false
+  deletion_protection=false
   name = "${var.environment}-products-${each.key}"
 
   attributes_config {
@@ -29,9 +29,10 @@ resource "algolia_index" "primaries" {
 }
 
 resource "algolia_index" "replicas" {
+  depends_on = [algolia_index.primaries]
   for_each      = { for entry in local.product_suffixes: "${entry.locale}.${entry.replica}" => entry }
 
-  deletion_protection = false
+  deletion_protection=false
   name = "${var.environment}-products-${each.value.locale}-${each.value.replica}"
   primary_index_name = "${var.environment}-products-${each.value.locale}"
 }
