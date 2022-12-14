@@ -22,7 +22,7 @@ locals {
     relevance: "desc(publishDate)",
   }
 
-  # Nested loop over both lists, and flatten the result.
+  # Nested loop over locale and replica lists, and flatten the result.
   product_suffixes = distinct(flatten([
     for locale in local.locales : [
       for replica in local.replicas : {

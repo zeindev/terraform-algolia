@@ -1,0 +1,8 @@
+# remove .example from the name
+# can be passed to terraform CLI: terraform plan -var-file="development.tfvars"
+# then: terraform apply -var-file="development.tfvars"
+
+environment = "[ENVIRONMENT NAME]" # used for setting the prefix of index names
+
+app_id = "[APP ID]"
+api_key = "[API KEY]"
