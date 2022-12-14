@@ -26,7 +26,7 @@ locals {
   product_suffixes = distinct(flatten([
     for locale in local.locales : [
       for replica in local.replicas : {
-        locale = locale
+        locale  = locale
         replica = replica
       }
     ]
@@ -44,8 +44,8 @@ variable "searchable_attributes" {
 variable "attributes_for_faceting" {
   type    = list(string)
   default = [
-      "productType"
-    ]
+    "productType"
+  ]
 }
 
 # specify values for the following variables in a tfvars file and pass it to Terraform CLI. Ex: terraform plan -var-file="dev.tfvars"

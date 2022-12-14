@@ -4,5 +4,5 @@
 
 environment = "[ENVIRONMENT NAME]" # used for setting the prefix of index names
 
-app_id = "[APP ID]"
+app_id  = "[APP ID]"
 api_key = "[API KEY]"

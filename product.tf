@@ -29,11 +29,34 @@ resource "algolia_index" "primaries" {
 
 resource "algolia_index" "replicas" {
   depends_on = [algolia_index.primaries]
-  for_each      = { for entry in local.product_suffixes: "${entry.locale}.${entry.replica}" => entry }
+  for_each   = { for entry in local.product_suffixes: "${entry.locale}.${entry.replica}" => entry }
 
   name = "${var.environment}-products-${each.value.locale}-${each.value.replica}"
   primary_index_name = "${var.environment}-products-${each.value.locale}"
   ranking_config {
     custom_ranking = [lookup(local.replica_sort, each.value.replica, "")]
   }
+}
+
+resource "algolia_index" "query_suggestions" {
+  depends_on = [algolia_index.primaries]
+  for_each   = toset(local.locales)
+
+  name = "${var.environment}-products-${each.key}_query_suggestions"
+}
+
+resource "algolia_query_suggestions" "query_suggestions" {
+  depends_on = [algolia_index.query_suggestions]
+  for_each   = toset(local.locales)
+
+  index_name = "${var.environment}-products-${each.key}_query_suggestions"
+
+  source_indices {
+    index_name  = "${var.environment}-products-${each.key}"
+    min_hits    = 10
+    min_letters = 3
+    generate    = [["name"], ["name", "productType"]]
+  }
+
+  // languages = ["en", "ja"]
 }
