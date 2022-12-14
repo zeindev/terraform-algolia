@@ -1,0 +1,2 @@
+# terraform-algolia
+ Provisions algolia
