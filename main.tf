@@ -10,7 +10,6 @@ terraform {
 }
 
 provider "algolia" {
-  # Configuration options
-  # app_id should come from environment variable ALGOLIA_APP_ID
-  # api_key should come from environment variable ALGOLIA_API_KEY
+  app_id = var.app_id
+  api_key = var.api_key
 }
