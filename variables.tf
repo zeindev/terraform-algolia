@@ -1,39 +1,29 @@
-variable "locale" {
-  type = object({
-    en-us = string
-    en-gb = string
-    nl = string
-    nl-be = string
-    de = string
-    en-eu = string
-  })
-  default = {
-      en-us = "en-us"
-      en-gb = "en-gb"
-      nl = "nl"
-      nl-be = "nl-be"
-      de = "de"
-      en-eu = "en-eu"
-    }
-  
-}
+locals {
+  locales = [
+    "de",
+    "en-eu",
+    "en-gb",
+    "en-us",
+    "nl",
+    "nl-be"
+  ]
+  replicas = [
+    "latest",
+    "priceAsc",
+    "priceDesc",
+    "featured",
+    "relevance",
+  ]
 
-variable "replica" {
-  type = object({
-    latest = string
-    priceAsc = string
-    priceDesc = string
-    featured = string
-    relevance = string
-  })
-  default = {
-      latest = "latest"
-      priceAsc = "priceAsc"
-      priceDesc = "priceDesc"
-      featured = "featured"
-      relevance = "relevance"
-    }
-  
+  # Nested loop over both lists, and flatten the result.
+  product_suffixes = distinct(flatten([
+    for locale in local.locales : [
+      for replica in local.replicas : {
+        locale = locale
+        replica = replica
+      }
+    ]
+  ]))
 }
 
 variable "searchable_attributes" {
