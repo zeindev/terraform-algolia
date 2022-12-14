@@ -33,4 +33,7 @@ resource "algolia_index" "replicas" {
 
   name = "${var.environment}-products-${each.value.locale}-${each.value.replica}"
   primary_index_name = "${var.environment}-products-${each.value.locale}"
+  ranking_config {
+    custom_ranking = [lookup(local.replica_sort, each.value.replica, "")]
+  }
 }

@@ -14,6 +14,13 @@ locals {
     "featured",
     "relevance",
   ]
+  replica_sort = {
+    latest: "desc(publishDate)",
+    priceAsc: "asc(prices.value.centAmount)",
+    priceDesc: "desc(prices.value.centAmount)",
+    featured: "desc(featured)",
+    relevance: "desc(publishDate)",
+  }
 
   # Nested loop over both lists, and flatten the result.
   product_suffixes = distinct(flatten([
