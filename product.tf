@@ -27,6 +27,7 @@ resource "algolia_index" "primaries" {
   }
 }
 
+# creates a set of standard replicas for each primary index to enable different sorting
 resource "algolia_index" "replicas" {
   depends_on = [algolia_index.primaries]
   for_each   = { for entry in local.product_suffixes: "${entry.locale}.${entry.replica}" => entry }
@@ -38,6 +39,7 @@ resource "algolia_index" "replicas" {
   }
 }
 
+# creates indices for query suggestions
 resource "algolia_index" "query_suggestions" {
   depends_on = [algolia_index.primaries]
   for_each   = toset(local.locales)
@@ -45,6 +47,7 @@ resource "algolia_index" "query_suggestions" {
   name = "${var.environment}-products-${each.key}_query_suggestions"
 }
 
+# query suggestions setup and definitions
 resource "algolia_query_suggestions" "query_suggestions" {
   depends_on = [algolia_index.query_suggestions]
   for_each   = toset(local.locales)
