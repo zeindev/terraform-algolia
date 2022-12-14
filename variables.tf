@@ -14,7 +14,7 @@ locals {
     "featured",
     "relevance",
   ]
-  replica_sort = {
+  replica_custom_ranking = {
     latest: "desc(publishDate)",
     priceAsc: "asc(prices.value.centAmount)",
     priceDesc: "desc(prices.value.centAmount)",
