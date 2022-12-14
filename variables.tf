@@ -51,7 +51,8 @@ variable "product_attributes_for_faceting" {
 variable "blog_searchable_attributes" {
   type    = list(string)
   default = [
-    "summary",
+    "headline",
+    "shortDescription",
     "mainCategory"
   ]
 }
