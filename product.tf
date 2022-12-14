@@ -1,13 +1,11 @@
-# product indices for en-us
-
-resource "algolia_index" "primaries" {
+resource "algolia_index" "product_primaries" {
   for_each      = toset(local.locales)
 
   name = "${var.environment}-products-${each.key}"
 
   attributes_config {
-    searchable_attributes = var.searchable_attributes
-    attributes_for_faceting = var.attributes_for_faceting
+    searchable_attributes   = var.product_searchable_attributes
+    attributes_for_faceting = var.product_attributes_for_faceting
   }
 
   ranking_config {
@@ -28,8 +26,8 @@ resource "algolia_index" "primaries" {
 }
 
 # creates a set of standard replicas for each primary index to enable different sorting
-resource "algolia_index" "replicas" {
-  depends_on = [algolia_index.primaries]
+resource "algolia_index" "product_replicas" {
+  depends_on = [algolia_index.product_primaries]
   for_each   = { for entry in local.product_suffixes: "${entry.locale}.${entry.replica}" => entry }
 
   name = "${var.environment}-products-${each.value.locale}-${each.value.replica}"
@@ -40,8 +38,8 @@ resource "algolia_index" "replicas" {
 }
 
 # creates indices for query suggestions
-resource "algolia_index" "query_suggestions" {
-  depends_on = [algolia_index.primaries]
+resource "algolia_index" "product_query_suggestions" {
+  depends_on = [algolia_index.product_primaries]
   for_each   = toset(local.locales)
 
   name = "${var.environment}-products-${each.key}_query_suggestions"
@@ -49,7 +47,7 @@ resource "algolia_index" "query_suggestions" {
 
 # query suggestions setup and definitions
 resource "algolia_query_suggestions" "query_suggestions" {
-  depends_on = [algolia_index.query_suggestions]
+  depends_on = [algolia_index.product_query_suggestions]
   for_each   = toset(local.locales)
 
   index_name = "${var.environment}-products-${each.key}_query_suggestions"

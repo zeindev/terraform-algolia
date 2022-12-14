@@ -33,7 +33,7 @@ locals {
   ]))
 }
 
-variable "searchable_attributes" {
+variable "product_searchable_attributes" {
   type    = list(string)
   default = [
     "sku",
@@ -41,10 +41,25 @@ variable "searchable_attributes" {
   ]
 }
 
-variable "attributes_for_faceting" {
+variable "product_attributes_for_faceting" {
   type    = list(string)
   default = [
     "productType"
+  ]
+}
+
+variable "blog_searchable_attributes" {
+  type    = list(string)
+  default = [
+    "summary",
+    "mainCategory"
+  ]
+}
+
+variable "blog_attributes_for_faceting" {
+  type    = list(string)
+  default = [
+    "mainCategory"
   ]
 }
 
